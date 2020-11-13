@@ -1,0 +1,62 @@
+# Default values for do-updater.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# do-updater image configuration
+image:
+  repository: timothyb89/do-updater
+
+  # replace with latest version
+  tag: v1.0.0
+  pullPolicy: IfNotPresent
+  pullSecrets: []
+
+# DigitalOcean API key secret. Secret must be created externally.
+apiKey:
+  # k8s secret name,
+  secretName: ''
+
+  # key in secret containing the token
+  secretKey: key
+
+# A DigitalOcean tag selector for nodes to include in the record. Multiple IPs
+# will result in multiple record entries for simple DNS loadbalancing.
+# Example: `k8s:<uuid>` to select all nodes in the cluster, if using an
+# nginx-ingress DaemonSet
+dropletTag: ''
+
+# The domain (zone) to update, per DigitalOcean's DNS API. Note this is not
+# necessarily the name of the record that will be created.
+domain: ''
+
+# The destination record to create. For example:
+#   record:
+#     kind: A
+#     ttl: 3600
+#     name: '*'
+# ... will create a wildcard record under the configured domain.
+record:
+  kind: ''
+  ttl: ''
+  name: ''
+
+nameOverride: ""
+fullnameOverride: ""
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+  #  memory: 128Mi
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}

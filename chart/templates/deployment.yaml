@@ -1,0 +1,70 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "do-updater.fullname" . }}
+  labels:
+    app.kubernetes.io/name: {{ include "do-updater.name" . }}
+    helm.sh/chart: {{ include "do-updater.chart" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}
+    app.kubernetes.io/managed-by: {{ .Release.Service }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "do-updater.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: {{ include "do-updater.name" . }}
+        app.kubernetes.io/instance: {{ .Release.Name }}
+    spec:
+      {{- if .Values.image.pullSecrets }}
+      imagePullSecrets:
+        {{- toYaml .Values.image.pullSecrets | nindent 8 }}
+      {{- end }}
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          resources:
+            {{- toYaml .Values.resources | nindent 12 }}
+          env:
+            {{- if .Values.domain }}
+            - name: DOMAIN_NAME
+              value: "{{ .Values.domain }}"
+            {{- end }}
+            {{- if .Values.dropletTag }}
+            - name: DROPLET_TAG
+              value: "{{ .Values.dropletTag }}"
+            {{- end }}
+            {{- if .Values.record.kind }}
+            - name: RECORD_KIND
+              value: "{{ .Values.record.kind }}"
+            {{- end }}
+            {{- if .Values.record.ttl }}
+            - name: RECORD_TTL
+              value: "{{ .Values.record.ttl }}"
+            {{- end }}
+            {{- if .Values.record.name }}
+            - name: RECORD_NAME
+              value: "{{ .Values.record.name }}"
+            {{- end }}
+            - name: API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: "{{ .Values.apiKey.secretName }}"
+                  key: "{{ .Values.apiKey.secretKey }}"
+
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+    {{- end }}
