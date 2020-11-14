@@ -7,7 +7,7 @@ image:
   repository: timothyb89/do-updater
 
   # replace with latest version
-  tag: v1.0.0
+  tag: v1.0.1
   pullPolicy: IfNotPresent
   pullSecrets: []
 

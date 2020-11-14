@@ -1,11 +1,11 @@
 [package]
 name = "do-updater"
-version = "1.0.0"
+version = "1.0.1"
 authors = ["Tim Buckley <timothyb89@gmail.com>"]
 edition = "2018"
 
 [dependencies]
-digitalocean = "0.1"
+digitalocean = { git = "https://github.com/timothyb89/digitalocean", branch = "nillable-gateways" }
 err-derive = "0.3"
 failure = "0.1"
 serde = { version = "1.0", features = ["derive"] }

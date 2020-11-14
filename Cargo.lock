@@ -247,8 +247,7 @@ dependencies = [
 [[package]]
 name = "digitalocean"
 version = "0.1.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1ce46f423ac4d033c3f0bd032677f2a6362232435de75deacad7c1490f9eb5be"
+source = "git+https://github.com/timothyb89/digitalocean?branch=nillable-gateways#0cd1f359e6c75d526bfb6c0776a668f29f643136"
 dependencies = [
  "chrono",
  "getset",
@@ -265,7 +264,7 @@ dependencies = [
 
 [[package]]
 name = "do-updater"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "clokwerk",
  "digitalocean",

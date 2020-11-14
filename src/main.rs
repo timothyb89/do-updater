@@ -9,6 +9,7 @@ use std::thread;
 use std::time::Duration;
 
 use clokwerk::{Scheduler, TimeUnits};
+use digitalocean::prelude::*;
 use digitalocean::DigitalOcean;
 use digitalocean::api::{Domain, DomainRecord, Droplet};
 use env_logger::Env;
@@ -50,7 +51,7 @@ struct Config {
 }
 
 fn list_droplet_ips(client: &DigitalOcean, config: &Config) -> Result<HashSet<String>> {
-    let droplets = match client.execute(Droplet::list_by_tag(&config.droplet_tag)) {
+    let droplets = match Droplet::list_by_tag(&config.droplet_tag).execute(&client) {
         Ok(droplets) => droplets,
         Err(e) => return Err(DOError::ListDropletsFail(e.to_string()))
     };
